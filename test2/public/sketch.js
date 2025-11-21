@@ -57,7 +57,7 @@ function drawMouth(indexList, face, x, y) {
   let w = (maxX - minX) + pad * 2;
   let h = (maxY - minY) + pad * 2;
   image(video, x, y, w * 2, h * 2, minX, minY, w, h);
-  filter(POSTERIZE, 3); 
+  filter(BLUR, 3); 
 }
 
 function gotFaces(results) {
