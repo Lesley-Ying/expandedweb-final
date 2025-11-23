@@ -15,11 +15,10 @@ function preload() {
 }
 
 function setup() {
-  createCanvas(640, 480);
+  createCanvas(windowWidth,windowHeight);
   video = createCapture(VIDEO);
   video.size(640, 480);
   video.hide();
-
   faceMesh.detectStart(video, gotFaces);
 }
 
@@ -32,7 +31,7 @@ function draw() {
       61, 146, 91, 181, 84, 17, 314, 405, 321, 375, 291, 308, 324, 318, 402, 317
     ];
 
-    drawMouth(mouthIndex, face, 170, 200); 
+    drawMouth(mouthIndex, face, width/2, height/2); 
   }
 }
 

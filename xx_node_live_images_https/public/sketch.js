@@ -76,4 +76,5 @@ function sendImage() {
     };
     socket.emit('image', data);
   }, 'image/png', 0.92);
+  
 }
