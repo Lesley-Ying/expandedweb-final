@@ -11,19 +11,25 @@ let isFocused = false;
 let icon;
 
 let options = { maxFaces: 1, refineLandmarks: false, flipHorizontal: false };
+let pg;
+
 
 function preload() {
   faceMesh = ml5.faceMesh(options);
 }
 
 function setup() {
-  createCanvas(windowWidth,windowHeight);
+  createCanvas(windowWidth, windowHeight);
   video = createCapture(VIDEO);
   video.size(640, 480);
   video.hide();
   faceMesh.detectStart(video, gotFaces);
+
   icon = new SearchIcon(120, 100, width / 2, height / 2);
+
+  pg = createGraphics(200, 200);
 }
+
 
 function draw() {
   background(255);
@@ -65,7 +71,6 @@ function draw() {
 // }
 function drawMouth(indexList, face, cx, cy) {
 
-  // -------- 1. 计算嘴巴 bounding box --------
   let xs = [], ys = [];
 
   for (let i = 0; i < indexList.length; i++) {
@@ -83,24 +88,16 @@ function drawMouth(indexList, face, cx, cy) {
   let w = (maxX - minX) + pad * 2;
   let h = (maxY - minY) + pad * 2;
 
-  // -------- 2. 固定输出为正方形 (200x200) --------
+  let side = max(w, h);
   let OUT = 200;
-  let side = max(w, h);  // 从原视频取出的区域大小
 
-  // -------- 3. 保证嘴巴中心对齐正方形中心 --------
-  let pg = createGraphics(OUT, OUT);
-
-  pg.image(
-    video,
-    0, 0, OUT, OUT,        // 目标：固定 200×200
-    minX, minY, side, side // 来源区域：随嘴巴大小变化，但输出是固定大小
-  );
-
+  pg.clear(); 
+  pg.image(video, 0, 0, OUT, OUT, minX, minY, side, side);
   pg.filter(BLUR, 3);
 
-  // -------- 4. 绘制在屏幕正中心（cx, cy 为中心点） --------
   image(pg, cx - OUT/2, cy - OUT/2);
 }
+
 class SearchIcon {
   constructor(x, y, tx, ty) {
     this.x = x;
